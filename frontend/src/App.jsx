@@ -9,7 +9,7 @@ import { FaPlus } from "react-icons/fa";
 export default function App() {
   const [values, setValues] = useState();
   const [listCard, setListCard] = useState([]);
-
+  console.log(listCard)
   const handleRegister = () => {
     Axios.post("http://localhost:8000/produtos", {
       name: values.name,
@@ -22,6 +22,7 @@ export default function App() {
           id: response.data[0].id,
           name: values.name,
           price: values.price,
+          qtd: values.qtd,
         },
       ]);
     });
@@ -72,24 +73,28 @@ export default function App() {
           <FaPlus /> ADICIONAR
         </button>
       </div>
-      <div className="card-option">
-        <span>NOME</span>
-        <span>PREÇO</span>
-        <span>QUANTIDADE</span>
-      </div>
-      <div className="card-box">
-        {listCard.map((val) => (
-          <Card
-            listCard={listCard}
-            setListCard={setListCard}
-            key={val.id}
-            id={val.id}
-            name={val.name}
-            price={val.price}
-            qtd={val.qtd}
-          />
-        ))}
-      </div>
+      {listCard.length > 0  ?
+      <>
+        <div className="card-option">
+          <span>NOME</span>
+          <span>PREÇO</span>
+          <span>QUANTIDADE</span>
+        </div>
+        <div className="card-box">
+          {listCard.map((val) => (
+            <Card
+              key={val.id}
+              id={val.id}
+              name={val.name}
+              price={val.price}
+              qtd={val.qtd}
+            />
+          ))}
+        </div>
+        </>
+        : 
+        null
+      }
     </main>
   );
 }
