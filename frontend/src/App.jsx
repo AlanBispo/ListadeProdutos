@@ -1,26 +1,30 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
 import Axios from "axios";
+
 import Card from "./components/cards/cards";
+
+import "./App.css";
+import { FaPlus } from "react-icons/fa";
 
 export default function App() {
   const [values, setValues] = useState();
   const [listCard, setListCard] = useState([]);
-  console.log(listCard);
+
   const handleRegister = () => {
     Axios.post("http://localhost:8000/produtos", {
       name: values.name,
-      cost: values.cost,
+      price: values.price,
+      qtd: values.qtd,
     }).then((response) => {
-        setListCard([
-          ...listCard,
-          {          
-            id: response.data[0].id,
-            name: values.name,
-            cost: values.cost,
-          },
-        ]);
-      });
+      setListCard([
+        ...listCard,
+        {
+          id: response.data[0].id,
+          name: values.name,
+          price: values.price,
+        },
+      ]);
+    });
   };
 
   useEffect(() => {
@@ -34,44 +38,58 @@ export default function App() {
       ...prevValues,
       [value.target.name]: value.target.value,
     }));
+    console.log(values);
   };
 
   return (
-    <div className="app-container">
+    <main className="container">
       <div className="register-container">
-        <h1 className="register-title">Lista de produtos</h1>
+        <h1 className="register-title">LISTA DE PRODUTOS</h1>
 
         <input
           type="text"
           name="name"
-          placeholder="Nome"
+          placeholder="NOME:"
           className="register-input"
           onChange={handleaddValues}
         />
         <input
           type="text"
-          placeholder="Preço"
-          name="cost"
+          placeholder="PREÇO:"
+          name="price"
+          className="register-input"
+          onChange={handleaddValues}
+        />
+        <input
+          type="text"
+          placeholder="QUANTIDADE:"
+          name="qtd"
           className="register-input"
           onChange={handleaddValues}
         />
 
         <button onClick={handleRegister} className="register-button">
-          Cadastrar
+          <FaPlus /> ADICIONAR
         </button>
       </div>
-
-      {listCard.map((val) => (
-        <Card
-          listCard={listCard}
-          setListCard={setListCard}
-          key={val.id}
-          id={val.id}
-          name={val.name}
-          cost={val.cost}
-          category={val.category}
-        />
-      ))}
-    </div>
+      <div className="card-option">
+        <span>NOME</span>
+        <span>PREÇO</span>
+        <span>QUANTIDADE</span>
+      </div>
+      <div className="card-box">
+        {listCard.map((val) => (
+          <Card
+            listCard={listCard}
+            setListCard={setListCard}
+            key={val.id}
+            id={val.id}
+            name={val.name}
+            price={val.price}
+            qtd={val.qtd}
+          />
+        ))}
+      </div>
+    </main>
   );
 }

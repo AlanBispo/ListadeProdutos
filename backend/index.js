@@ -64,7 +64,7 @@ server.put('/produtos', (req, res) => {
 server.delete('/produtos/:index', (req, res) => {
     const { index } = req.params
 
-    produtos = produtos.filter(item => item.id != index);
+    produtos = produtos.filter(item =>item.id != index);
 
     return res.json({ message: 'O curso foi deletado' })
 })
