@@ -11,7 +11,7 @@ export default function App() {
   const [values, setValues] = useState();
   const [listCard, setListCard] = useState([]);
   
-  console.log(listCard);
+  
 
   const handleRegister = () => {
     Axios.post("http://localhost:8000/produtos", {
@@ -27,34 +27,6 @@ export default function App() {
       });
   };
 
-  const edit = () => {
-    return(
-      <div className="edit">
-        <p>ola</p>
-      </div>
-    );
-  }
-  const handleEdit = () => {
-    Axios.put("http://localhost:8000/produtos", {
-      id: listCard.id,
-      name: listCard.name,
-      price: listCard.id,
-      qtd: listCard.qtd
-    }).then(() => {
-      setListCard(
-        listCard.map((value) => {
-          return value.id == listCard.id
-            ? {
-              id: listCard.id,
-              name: listCard.name,
-              price: listCard.id,
-              qtd: listCard.qtd
-              }
-            : value;
-        })
-      );
-    });
-  };
 
   useEffect(() => {
     Axios.get("http://localhost:8000/produtos").then((response) => {
@@ -130,7 +102,7 @@ export default function App() {
                       onClick={(event) => handleClick(val.id)}
                       id="lixeira"
                     />
-                    <FaPen id="alterar" onClick={() => edit()}/>
+                    <FaPen id="alterar" />
                   </td>
                   
                 </tr>
