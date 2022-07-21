@@ -86,7 +86,9 @@ tr:nth-child(even) {background-color: #ccc;}
 #alterar{
   color: blue;
   margin-left: 10px;
+  cursor: pointer;
 }
 #lixeira{
   color: red;
+  cursor: pointer;
 }
