@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 
+import { FaTrashAlt, FaPen } from "react-icons/fa";
 import Card from "./components/cards/cards";
 
 import "./App.css";
@@ -9,22 +10,49 @@ import { FaPlus } from "react-icons/fa";
 export default function App() {
   const [values, setValues] = useState();
   const [listCard, setListCard] = useState([]);
-  console.log(listCard)
+  
+  console.log(listCard);
+
   const handleRegister = () => {
     Axios.post("http://localhost:8000/produtos", {
       name: values.name,
       price: values.price,
       qtd: values.qtd,
-    }).then((response) => {
-      setListCard([
-        ...listCard,
-        {
-          id: response.data[0].id,
-          name: values.name,
-          price: values.price,
-          qtd: values.qtd,
-        },
-      ]);
+    })
+      .then((response) => {
+        setListCard(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const edit = () => {
+    return(
+      <div className="edit">
+        <p>ola</p>
+      </div>
+    );
+  }
+  const handleEdit = () => {
+    Axios.put("http://localhost:8000/produtos", {
+      id: listCard.id,
+      name: listCard.name,
+      price: listCard.id,
+      qtd: listCard.qtd
+    }).then(() => {
+      setListCard(
+        listCard.map((value) => {
+          return value.id == listCard.id
+            ? {
+              id: listCard.id,
+              name: listCard.name,
+              price: listCard.id,
+              qtd: listCard.qtd
+              }
+            : value;
+        })
+      );
     });
   };
 
@@ -34,12 +62,18 @@ export default function App() {
     });
   }, []);
 
+  const handleClick = (id) => {
+    Axios.delete(`http://localhost:8000/produtos/${id}`).then((response) => {
+      setListCard(response.data);
+    });
+  };
+
   const handleaddValues = (value) => {
     setValues((prevValues) => ({
       ...prevValues,
       [value.target.name]: value.target.value,
     }));
-    console.log(values);
+    
   };
 
   return (
@@ -61,6 +95,7 @@ export default function App() {
           className="register-input"
           onChange={handleaddValues}
         />
+
         <input
           type="text"
           placeholder="QUANTIDADE:"
@@ -73,28 +108,37 @@ export default function App() {
           <FaPlus /> ADICIONAR
         </button>
       </div>
-      {listCard.length > 0  ?
-      <>
-        <div className="card-option">
-          <span>NOME</span>
-          <span>PREÇO</span>
-          <span>QUANTIDADE</span>
+
+      {listCard.length > 0 ? (
+        <div className="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Quantidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              {listCard.map((val) => (
+                <tr key={val.id}>
+                  <td>{val.name}</td>
+                  <td>{val.price}</td>
+                  <td>{val.qtd}</td>
+                  <td>
+                    <FaTrashAlt
+                      onClick={(event) => handleClick(val.id)}
+                      id="lixeira"
+                    />
+                    <FaPen id="alterar" onClick={() => edit()}/>
+                  </td>
+                  
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <div className="card-box">
-          {listCard.map((val) => (
-            <Card
-              key={val.id}
-              id={val.id}
-              name={val.name}
-              price={val.price}
-              qtd={val.qtd}
-            />
-          ))}
-        </div>
-        </>
-        : 
-        null
-      }
+      ) : null}
     </main>
   );
 }

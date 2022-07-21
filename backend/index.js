@@ -66,7 +66,7 @@ server.delete('/produtos/:index', (req, res) => {
 
     produtos = produtos.filter(item =>item.id != index);
 
-    return res.json({ message: 'O curso foi deletado' })
+    return res.json(produtos)
 })
 
 

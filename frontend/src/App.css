@@ -65,3 +65,28 @@
   border: 1px solid black;
   border-radius: 5px;
 }
+.table{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content:center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 50%;
+ 
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+tr:nth-child(even) {background-color: #ccc;}
+#alterar{
+  color: blue;
+  margin-left: 10px;
+}
+#lixeira{
+  color: red;
+}
